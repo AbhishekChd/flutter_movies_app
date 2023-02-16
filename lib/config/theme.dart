@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppColors {
   /// Seed Color: #2196F3
@@ -65,6 +66,17 @@ abstract class AppTheme {
 
   static ThemeData light() => ThemeData(
         useMaterial3: isMaterial,
+        appBarTheme: AppBarTheme(
+            titleTextStyle: TextStyle(
+          fontSize: 24,
+          color: AppColors.onPrimaryContainer,
+          fontWeight: FontWeight.bold,
+          fontFamily: GoogleFonts.ibmPlexMono().fontFamily,
+        )),
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
           primary: AppColors.primary,
@@ -94,6 +106,7 @@ abstract class AppTheme {
 
   static ThemeData dark() => ThemeData(
         useMaterial3: isMaterial,
+        fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
           primary: AppColorsDark.primary,
