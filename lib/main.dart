@@ -32,6 +32,7 @@ class _MoviesAppState extends State<MoviesApp> {
         body: _page[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
           onTap: (value) => setState(() => _selectedIndex = value),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: Strings.bottomNavHome),
