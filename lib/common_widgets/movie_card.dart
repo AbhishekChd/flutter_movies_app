@@ -19,6 +19,12 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        borderRadius: BorderRadius.all(cardRadius),
+      ),
       child: InkWell(
         onTap: () {},
         customBorder: RoundedRectangleBorder(
