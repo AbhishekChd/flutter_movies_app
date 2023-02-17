@@ -106,6 +106,16 @@ abstract class AppTheme {
 
   static ThemeData dark() => ThemeData(
         useMaterial3: isMaterial,
+        appBarTheme: AppBarTheme(
+            titleTextStyle: TextStyle(
+          fontSize: 24,
+          color: AppColorsDark.onPrimaryContainer,
+          fontWeight: FontWeight.bold,
+          fontFamily: GoogleFonts.ibmPlexMono().fontFamily,
+        )),
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(fontWeight: FontWeight.w600),
+        ),
         fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
