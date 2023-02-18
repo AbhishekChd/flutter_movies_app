@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/config/config.dart';
+import 'package:flutter_movies_app/config/prefs.dart';
 import 'package:flutter_movies_app/config/theme.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:flutter_movies_app/ui/screens.dart';
@@ -22,8 +23,8 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ModelTheme>(
-      create: (context) => currentTheme,
+    return ChangeNotifierProvider<SystemPreferences>(
+      create: (context) => preferences,
       child: const MovieAppProvider(),
     );
   }
@@ -36,12 +37,12 @@ class MovieAppProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ModelTheme theme = Provider.of<ModelTheme>(context);
+    SystemPreferences systemPreferences = Provider.of<SystemPreferences>(context);
     return MaterialApp(
       title: Strings.appName,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
-      themeMode: theme.currentTheme(),
+      themeMode: systemPreferences.currentTheme(),
       home: const MoviesApp(),
     );
   }

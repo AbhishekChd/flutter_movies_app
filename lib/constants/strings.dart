@@ -3,6 +3,8 @@ abstract class Strings {
 
   /// App Preferences
   static const String appPreferencesName = 'pref_cineverse';
+  static const String prefSystemThemeKey = 'is_system_default';
+  static const String prefDarkModeKey = 'is_dark';
   static const String prefApiKey = 'pref_api_key';
 
   static const String bottomNavHome = "Home";
@@ -15,4 +17,5 @@ abstract class Strings {
   static const String settingItemApiKey = "API Key";
   static const String settingItemApiKeyDefault = "Tap to edit";
   static const String settingItemThemeSystem = "Automatic (System default)";
+  static const String settingActionDone = "Done";
 }

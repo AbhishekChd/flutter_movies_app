@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movies_app/config/config.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppColors {
@@ -144,42 +143,4 @@ abstract class AppTheme {
         ),
         dividerTheme: const DividerThemeData(color: AppColorsDark.outline),
       );
-}
-
-/// [ModelTheme] is a theme modification system for the app which uses [ChangeNotifier] to
-/// send change notifications when [ChangeNotifier.notifyListeners] is called
-class ModelTheme extends ChangeNotifier {
-  final String themeKey = "is_dark";
-  final String systemThemeKey = "is_system_default";
-  static bool _isDark = true;
-  static bool _isSystemDefault = true;
-
-  ThemeMode currentTheme() {
-    return _isSystemDefault ? ThemeMode.system : (_isDark ? ThemeMode.dark : ThemeMode.light);
-  }
-
-  bool isDark() {
-    return _isDark;
-  }
-
-  bool isSystemDefault() {
-    return _isSystemDefault;
-  }
-
-  switchThemeMode() {
-    _isDark = !_isDark;
-    box.put(themeKey, _isDark);
-    notifyListeners();
-  }
-
-  switchToSystemMode() {
-    _isSystemDefault = !_isSystemDefault;
-    box.put(systemThemeKey, _isSystemDefault);
-    notifyListeners();
-  }
-
-  ModelTheme() {
-    _isDark = box.get(themeKey, defaultValue: true);
-    _isSystemDefault = box.get(systemThemeKey, defaultValue: true);
-  }
 }
