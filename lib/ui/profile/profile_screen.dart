@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movies_app/config/config.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -11,8 +12,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _settingsMargin = const EdgeInsetsDirectional.all(8);
-  bool _systemTheme = true;
-  bool _darkMode = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,23 +36,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SettingsTile.switchTile(
               leading: const Icon(Icons.settings_outlined),
               title: const Text(Strings.settingItemThemeSystem),
-              initialValue: _systemTheme,
-              onToggle: (bool value) {
-                setState(() {
-                  _systemTheme = !_systemTheme;
-                });
-              },
+              initialValue: currentTheme.isSystemDefault(),
+              onToggle: (bool value) => setState(() => currentTheme.switchToSystemMode()),
             ),
             SettingsTile.switchTile(
               leading: const Icon(Icons.dark_mode_outlined),
               title: const Text(Strings.settingTitleDarkMode),
-              initialValue: _darkMode,
-              enabled: !_systemTheme,
-              onToggle: (bool value) {
-                setState(() {
-                  _darkMode = value;
-                });
-              },
+              initialValue: currentTheme.isDark(),
+              enabled: !currentTheme.isSystemDefault(),
+              onToggle: (bool value) => setState(() => currentTheme.switchThemeMode()),
             ),
           ],
         ),
