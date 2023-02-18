@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/config/config.dart';
-import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:flutter_movies_app/data/network/tmdb_api.dart';
 import 'package:flutter_movies_app/models/models.dart';
 import 'package:flutter_movies_app/utils/image_utils.dart';
@@ -19,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Movie> movies = [];
 
   _HomeScreenState() {
-    String apiKey = box.get(Strings.prefApiKey, defaultValue: "");
+    String apiKey = preferences.getApiKey();
 
     final tmdbClient = TMDBClient(Dio());
     tmdbClient.getMoviesByCriteria("popular", apiKey).then((TmdbResponse value) {
@@ -29,8 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         movies = value.movies!;
       });
-    }).onError((error, stackTrace) {
-      print(error);
     });
   }
 

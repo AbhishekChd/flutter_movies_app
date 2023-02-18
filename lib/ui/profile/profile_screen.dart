@@ -3,6 +3,7 @@ import 'package:flutter_movies_app/config/config.dart';
 import 'package:flutter_movies_app/config/prefs.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:flutter_movies_app/ui/profile/api_key_page.dart';
+import 'package:flutter_movies_app/utils/text_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -19,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     SystemPreferences systemPreferences = Provider.of<SystemPreferences>(context);
-    String apiKey = systemPreferences.getApiKey();
+    String apiKey = TextUtils.minifyText(systemPreferences.getApiKey(), 6);
     return SettingsList(
       sections: [
         SettingsSection(
