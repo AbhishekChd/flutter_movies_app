@@ -16,7 +16,6 @@ class MoviesApp extends StatefulWidget {
 
 class _MoviesAppState extends State<MoviesApp> {
   int _selectedIndex = 0;
-  final _page = const [HomeScreen(), FavouritesScreen(), WatchlistScreen(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,10 @@ class _MoviesAppState extends State<MoviesApp> {
         appBar: AppBar(
           title: const Text(Strings.appName),
         ),
-        body: _page[_selectedIndex],
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: const [HomeScreen(), FavouritesScreen(), WatchlistScreen(), ProfileScreen()],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
