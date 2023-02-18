@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   await Hive.initFlutter();
-  box = await Hive.openBox("theme");
+  box = await Hive.openBox(Strings.appPreferencesName);
   runApp(const Application());
 }
 

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -43,7 +44,15 @@ class MovieCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: Theme.of(context).textTheme.titleMedium),
+                  SizedBox(
+                    height: _getTitleHeight(context),
+                    child: Text(
+                      name,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
@@ -61,11 +70,11 @@ class MovieCard extends StatelessWidget {
                       const SizedBox(
                         width: 8,
                       ),
-                      Text(rating.toString(), style: Theme.of(context).textTheme.labelLarge)
+                      Text(rating.toStringAsFixed(1), style: Theme.of(context).textTheme.labelLarge)
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(genres.join(", "), style: Theme.of(context).textTheme.labelMedium),
+                  Text(_extractTopGenres(), style: Theme.of(context).textTheme.labelMedium),
                   const SizedBox(height: 4),
                 ],
               ),
@@ -74,5 +83,14 @@ class MovieCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _extractTopGenres({int count = 2}) => genres.sublist(0, min(genres.length, count)).join(", ");
+
+  double _getTitleHeight(BuildContext context) {
+    double height = Theme.of(context).textTheme.titleMedium!.height ?? 1;
+    double fontSize = Theme.of(context).textTheme.titleMedium!.fontSize ?? 1;
+    double titleTextHeight = max(height * fontSize * 1.8, 24);
+    return titleTextHeight;
   }
 }

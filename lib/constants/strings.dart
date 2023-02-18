@@ -1,6 +1,10 @@
 abstract class Strings {
   static const String appName = 'Cineverse';
 
+  /// App Preferences
+  static const String appPreferencesName = 'pref_cineverse';
+  static const String prefApiKey = 'pref_api_key';
+
   static const String bottomNavHome = "Home";
   static const String bottomNavFavourites = "Favorites";
   static const String bottomNavWatchlist = "Watchlist";
