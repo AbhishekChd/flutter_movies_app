@@ -32,26 +32,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Resource<List<Movie>>>(
-      stream: _bloc.movieListStream,
-      builder: (context, AsyncSnapshot<Resource<List<Movie>>> snapshot) {
-        if (snapshot.hasData) {
-          Resource<List<Movie>> response = snapshot.data!;
-          switch (response.status) {
-            case Status.completed:
-              return _fetchMovieGrid(response.data!);
-            case Status.loading:
-              return const Center(child: CircularProgressIndicator());
-            case Status.error:
-              return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
-          }
+    return StreamBuilder<Resource<Map<int, String>>>(
+      stream: _bloc.movieGenreStream,
+      builder: (context, AsyncSnapshot<Resource<Map<int, String>>> genreSnapshot) {
+        if (genreSnapshot.hasData && genreSnapshot.data!.status == Status.completed) {
+          return StreamBuilder<Resource<List<Movie>>>(
+            stream: _bloc.movieListStream,
+            builder: (context, AsyncSnapshot<Resource<List<Movie>>> movieListSnapshot) {
+              if (movieListSnapshot.hasData) {
+                Resource<List<Movie>> response = movieListSnapshot.data!;
+                switch (response.status) {
+                  case Status.completed:
+                    return _fetchMovieGrid(response.data!, genreSnapshot.data!.data!);
+                  case Status.loading:
+                    return const Center(child: CircularProgressIndicator());
+                  case Status.error:
+                    return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
+                }
+              }
+              return Container();
+            },
+          );
         }
         return Container();
       },
     );
   }
 
-  Widget _fetchMovieGrid(List<Movie> movies) {
+  Widget _fetchMovieGrid(List<Movie> movies, Map<int, String> genres) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -92,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
               rowSizes: List.generate(movies.length ~/ 2, (int index) => auto),
               rowGap: 16,
               columnGap: 8,
-              children: _generateMovieCards(movies),
+              children: _generateMovieCards(movies, genres),
             ),
           ],
         ),
@@ -100,13 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<Widget> _generateMovieCards(List<Movie> movies) {
+  List<Widget> _generateMovieCards(List<Movie> movies, Map<int, String> genres) {
     List<Widget> widgets = [];
     for (var movie in movies) {
       widgets.add(MovieCard(
         name: movie.title,
         rating: movie.rating / 2,
         imageUrl: ImageUtils.getLargePosterUrl(movie.posterPath),
+        genres: Genre.toNameList(genres, movie.genreIds),
       ));
     }
     return widgets;
