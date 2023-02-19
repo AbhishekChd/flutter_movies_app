@@ -11,17 +11,17 @@ class MovieBloc {
 
   Stream<Resource<List<Movie>>> get movieListStream => _movieListController.stream;
 
-  MovieBloc() {
+  MovieBloc(MovieSortingCriteria criteria) {
     _movieListController = StreamController<Resource<List<Movie>>>();
-    fetchMovieList();
+    fetchMovieList(criteria);
   }
 
-  fetchMovieList() {
+  fetchMovieList(MovieSortingCriteria criteria) {
     movieListSink.add(Resource.loading("Fetching popular movies"));
 
     String apiKey = preferences.getApiKey();
     final tmdbClient = TMDBClient(Dio());
-    tmdbClient.getMoviesByCriteria("popular", apiKey).then((TmdbResponse value) {
+    tmdbClient.getMoviesByCriteria(criteria, apiKey).then((TmdbResponse value) {
       movieListSink.add(Resource.completed(value.movies));
     }).onError((error, stackTrace) {
       movieListSink.add(Resource.error(error.toString()));

@@ -37,7 +37,7 @@ class _TMDBClient implements TMDBClient {
     )
             .compose(
               _dio.options,
-              'movie/${criteria}',
+              'movie/${criteria.name}',
               queryParameters: queryParameters,
               data: _data,
             )

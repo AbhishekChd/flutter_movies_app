@@ -9,7 +9,7 @@ abstract class Strings {
 
   /// Movie fetching filters
   static const String movieFilterPopular = 'Popular';
-  static const String movieFilterTrending = 'Trending';
+  static const String movieFilterTopRated = 'Top rated';
 
   static const String bottomNavHome = "Home";
   static const String bottomNavFavourites = "Favorites";

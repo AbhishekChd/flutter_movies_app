@@ -13,5 +13,17 @@ abstract class TMDBClient {
   factory TMDBClient(Dio dio) = _TMDBClient;
 
   @GET(TMDB.movieByCriteria)
-  Future<TmdbResponse> getMoviesByCriteria(@Path("criteria") String criteria, @Query("api_key") String apiKey);
+  Future<TmdbResponse> getMoviesByCriteria(
+    @Path("criteria") MovieSortingCriteria criteria,
+    @Query("api_key") String apiKey,
+  );
+}
+
+enum MovieSortingCriteria {
+  popular("popular"),
+  topRated("top_rated");
+
+  final String name;
+
+  const MovieSortingCriteria(this.name);
 }

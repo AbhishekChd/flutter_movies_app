@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/bloc/movie_bloc.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
+import 'package:flutter_movies_app/data/network/tmdb_api.dart';
 import 'package:flutter_movies_app/models/models.dart';
 import 'package:flutter_movies_app/utils/image_utils.dart';
 
@@ -14,12 +15,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late MovieBloc _bloc;
-  bool filterPopularSelected = false;
+  bool filterPopularSelected = true;
 
   @override
   void initState() {
     super.initState();
-    _bloc = MovieBloc();
+    _bloc = MovieBloc(filterPopularSelected ? MovieSortingCriteria.popular : MovieSortingCriteria.topRated);
   }
 
   @override
@@ -60,15 +61,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 FilterChip(
                   label: const Text(Strings.movieFilterPopular),
                   avatar: Icon(Icons.local_fire_department, color: Theme.of(context).iconTheme.color),
-                  onSelected: (value) => setState(() => filterPopularSelected = !filterPopularSelected),
+                  onSelected: (value) => setState(() {
+                    if (!filterPopularSelected) {
+                      _bloc.fetchMovieList(MovieSortingCriteria.popular);
+                    }
+                    filterPopularSelected = !filterPopularSelected;
+                  }),
                   selected: filterPopularSelected,
                   showCheckmark: false,
                 ),
                 const SizedBox(width: 8),
                 FilterChip(
-                  label: const Text(Strings.movieFilterTrending),
+                  label: const Text(Strings.movieFilterTopRated),
                   avatar: Icon(Icons.trending_up, color: Theme.of(context).iconTheme.color),
-                  onSelected: (value) => setState(() => filterPopularSelected = !filterPopularSelected),
+                  onSelected: (value) => setState(() {
+                    if (filterPopularSelected) {
+                      _bloc.fetchMovieList(MovieSortingCriteria.topRated);
+                    }
+                    filterPopularSelected = !filterPopularSelected;
+                  }),
                   showCheckmark: false,
                   selected: !filterPopularSelected,
                 ),
