@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/bloc/movie_bloc.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
+import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:flutter_movies_app/models/models.dart';
 import 'package:flutter_movies_app/utils/image_utils.dart';
 
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late MovieBloc _bloc;
+  bool filterPopularSelected = false;
 
   @override
   void initState() {
@@ -42,29 +44,57 @@ class _HomeScreenState extends State<HomeScreen> {
               return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
           }
         }
-        return const Placeholder();
+        return Container();
       },
     );
   }
 
   Widget _fetchMovieGrid(List<Movie> movies) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.49,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 4,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                FilterChip(
+                  label: const Text(Strings.movieFilterPopular),
+                  avatar: Icon(Icons.local_fire_department, color: Theme.of(context).iconTheme.color),
+                  onSelected: (value) => setState(() => filterPopularSelected = !filterPopularSelected),
+                  selected: filterPopularSelected,
+                  showCheckmark: false,
+                ),
+                const SizedBox(width: 8),
+                FilterChip(
+                  label: const Text(Strings.movieFilterTrending),
+                  avatar: Icon(Icons.trending_up, color: Theme.of(context).iconTheme.color),
+                  onSelected: (value) => setState(() => filterPopularSelected = !filterPopularSelected),
+                  showCheckmark: false,
+                  selected: !filterPopularSelected,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.49,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 4,
+              ),
+              itemCount: movies.length,
+              itemBuilder: (context, index) {
+                return MovieCard(
+                  name: movies[index].title,
+                  rating: movies[index].rating / 2,
+                  imageUrl: ImageUtils.getLargePosterUrl(movies[index].posterPath),
+                );
+              },
+            )
+          ],
         ),
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          return MovieCard(
-            name: movies[index].title,
-            rating: movies[index].rating / 2,
-            imageUrl: ImageUtils.getLargePosterUrl(movies[index].posterPath),
-          );
-        },
       ),
     );
   }

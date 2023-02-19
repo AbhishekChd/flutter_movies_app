@@ -7,6 +7,10 @@ abstract class Strings {
   static const String prefDarkModeKey = 'is_dark';
   static const String prefApiKey = 'pref_api_key';
 
+  /// Movie fetching filters
+  static const String movieFilterPopular = 'Popular';
+  static const String movieFilterTrending = 'Trending';
+
   static const String bottomNavHome = "Home";
   static const String bottomNavFavourites = "Favorites";
   static const String bottomNavWatchlist = "Watchlist";
