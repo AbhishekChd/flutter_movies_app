@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_movies_app/bloc/movie_bloc.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
@@ -86,27 +87,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 8),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.49,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 4,
-              ),
-              itemCount: movies.length,
-              itemBuilder: (context, index) {
-                return MovieCard(
-                  name: movies[index].title,
-                  rating: movies[index].rating / 2,
-                  imageUrl: ImageUtils.getLargePosterUrl(movies[index].posterPath),
-                );
-              },
-            )
+            LayoutGrid(
+              columnSizes: [1.fr, 1.fr],
+              rowSizes: List.generate(movies.length ~/ 2, (int index) => auto),
+              rowGap: 16,
+              columnGap: 8,
+              children: _generateMovieCards(movies),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> _generateMovieCards(List<Movie> movies) {
+    List<Widget> widgets = [];
+    for (var movie in movies) {
+      widgets.add(MovieCard(
+        name: movie.title,
+        rating: movie.rating / 2,
+        imageUrl: ImageUtils.getLargePosterUrl(movie.posterPath),
+      ));
+    }
+    return widgets;
   }
 }

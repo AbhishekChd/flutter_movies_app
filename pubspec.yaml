@@ -45,6 +45,7 @@ dependencies:
   json_annotation: ^4.8.0
   retrofit: ^4.0.1
   dio: ^5.0.0
+  flutter_layout_grid: ^2.0.0
 
 dev_dependencies:
   flutter_test:
