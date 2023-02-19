@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_movies_app/bloc/movie_bloc.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
-import 'package:flutter_movies_app/config/config.dart';
-import 'package:flutter_movies_app/data/network/tmdb_api.dart';
 import 'package:flutter_movies_app/models/models.dart';
 import 'package:flutter_movies_app/utils/image_utils.dart';
 
@@ -15,28 +12,42 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Movie> movies = [];
+  late MovieBloc _bloc;
 
-  _HomeScreenState() {
-    String apiKey = preferences.getApiKey();
+  @override
+  void initState() {
+    super.initState();
+    _bloc = MovieBloc();
+  }
 
-    final tmdbClient = TMDBClient(Dio());
-    tmdbClient.getMoviesByCriteria("popular", apiKey).then((TmdbResponse value) {
-      if (kDebugMode) {
-        print(value.toJson());
-      }
-      setState(() {
-        movies = value.movies!;
-      });
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (movies.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    return StreamBuilder<Resource<List<Movie>>>(
+      stream: _bloc.movieListStream,
+      builder: (context, AsyncSnapshot<Resource<List<Movie>>> snapshot) {
+        if (snapshot.hasData) {
+          Resource<List<Movie>> response = snapshot.data!;
+          switch (response.status) {
+            case Status.completed:
+              return _fetchMovieGrid(response.data!);
+            case Status.loading:
+              return const Center(child: CircularProgressIndicator());
+            case Status.error:
+              return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
+          }
+        }
+        return const Placeholder();
+      },
+    );
+  }
 
+  Widget _fetchMovieGrid(List<Movie> movies) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: GridView.builder(
