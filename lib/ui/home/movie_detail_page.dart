@@ -52,17 +52,14 @@ class _MovieDetailHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-          child: SizedBox(
-            // Standard Image dimensions: Dimension[width: 342, height: 513]
-            width: 342 / 2,
-            child: AspectRatio(
-                aspectRatio: 2 / 3,
-                child: Hero(
-                  tag: "hero-image-${movie.title}",
-                  child: Image(image: NetworkImage(movie.getPosterImageUrl())),
-                )),
+        SizedBox(
+          width: 342 / 2,
+          child: Hero(
+            tag: "hero-image-${movie.title}",
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: AspectRatio(aspectRatio: 2 / 3, child: Image(image: NetworkImage(movie.getPosterImageUrl()))),
+            ),
           ),
         ),
         Flexible(

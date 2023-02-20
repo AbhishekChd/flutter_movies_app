@@ -16,7 +16,8 @@ class MovieCard extends StatelessWidget {
   final double rating;
   final String imageUrl;
   final List<String> genres;
-  final cardRadius = const Radius.circular(12);
+  final cardRadiusTop = const Radius.circular(12);
+  final cardRadiusBottom = const Radius.circular(6);
   final VoidCallback? onTap;
 
   @override
@@ -26,7 +27,7 @@ class MovieCard extends StatelessWidget {
         side: BorderSide(
           color: Theme.of(context).colorScheme.outline,
         ),
-        borderRadius: BorderRadius.all(cardRadius),
+        borderRadius: BorderRadius.all(cardRadiusTop),
       ),
       child: InkWell(
         onTap: onTap,
@@ -37,11 +38,17 @@ class MovieCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(topLeft: cardRadius, topRight: cardRadius),
-              child: AspectRatio(
-                  aspectRatio: 2 / 3,
-                  child: Hero(tag: "hero-image-$name", child: Image(image: NetworkImage(imageUrl), fit: BoxFit.fill))),
+            Hero(
+              tag: "hero-image-$name",
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: cardRadiusTop,
+                  topRight: cardRadiusTop,
+                  bottomLeft: cardRadiusBottom,
+                  bottomRight: cardRadiusBottom,
+                ),
+                child: AspectRatio(aspectRatio: 2 / 3, child: Image(image: NetworkImage(imageUrl), fit: BoxFit.fill)),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8),
