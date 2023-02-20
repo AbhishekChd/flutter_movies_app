@@ -5,7 +5,7 @@ import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:flutter_movies_app/data/network/tmdb_api.dart';
 import 'package:flutter_movies_app/models/models.dart';
-import 'package:flutter_movies_app/utils/image_utils.dart';
+import 'movie_detail_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -114,8 +114,16 @@ class _HomeScreenState extends State<HomeScreen> {
       widgets.add(MovieCard(
         name: movie.title,
         rating: movie.rating / 2,
-        imageUrl: ImageUtils.getLargePosterUrl(movie.posterPath),
+        imageUrl: movie.getPosterImageUrl(),
         genres: Genre.toNameList(genres, movie.genreIds),
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MovieDetail(
+              movie: movie,
+              genres: Genre.toNameList(genres, movie.genreIds),
+            ),
+          ));
+        },
       ));
     }
     return widgets;

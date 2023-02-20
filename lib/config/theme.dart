@@ -143,4 +143,13 @@ abstract class AppTheme {
         ),
         dividerTheme: const DividerThemeData(color: AppColorsDark.outline),
       );
+
+  static Color rating(BuildContext context) {
+    switch (Theme.of(context).brightness) {
+      case Brightness.dark:
+        return Colors.deepOrange;
+      case Brightness.light:
+        return Colors.deepOrange;
+    }
+  }
 }
