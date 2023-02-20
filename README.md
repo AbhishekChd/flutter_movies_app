@@ -1,16 +1,40 @@
-# flutter_movies_app
+# Cineverse
 
-A new Flutter project.
+A bit overview, it uses [The Movie Database(TMDb)](https://www.themoviedb.org/) API to get movies data in JSON format and show it's details. It's a Flutter spinoff of a similar app I created for Udacity Nanodegree - [Cineverse Android](https://github.com/AbhishekChd/Cineverse)
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- [x] List **Popular** and **Top Rated** movies
+- [x] List movies as cards and show more details on selecting
+- [ ] Favourite you watched movies
+- [ ] Add movies to watchlist
+- [x] Settings to add API Key and switch Dark Mode
+- [x] Cached Images
+- [x] BLoC Pattern
+- [ ] Custom Error Handling
+- [ ] Repository Pattern
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Run the app
+1. Clone the project
+2. Fetch dependencies using `flutter get`
+3. Run: `flutter pub run build_runner watch --delete-conflicting-outputs`
+4. Then hit the <kbd>Run</kbd> button
+5. When app loads you need to add the API Key in settings screen
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## API Key
+To run the app you have to add [The Movie DB](https://developers.themoviedb.org/3/getting-started/introduction) API key. You can register on the developer website and fill some basic app information, then get the API Key.
+
+---
+
+## Libraries used
+
+- [retrofit](https://pub.dev/packages/retrofit)
+- [json_serializable](https://pub.dev/packages/json_serializable)
+- [google_fonts](https://pub.dev/packages/google_fonts)
+- [hive](https://pub.dev/packages/hive)
+- [cached_network_image](https://pub.dev/packages/cached_network_image)
+- [flutter_layout_grid](https://pub.dev/packages/flutter_layout_grid)
