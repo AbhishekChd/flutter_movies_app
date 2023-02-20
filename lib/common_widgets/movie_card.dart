@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 
@@ -47,7 +48,10 @@ class MovieCard extends StatelessWidget {
                   bottomLeft: cardRadiusBottom,
                   bottomRight: cardRadiusBottom,
                 ),
-                child: AspectRatio(aspectRatio: 2 / 3, child: Image(image: NetworkImage(imageUrl), fit: BoxFit.fill)),
+                child: AspectRatio(
+                  aspectRatio: 2 / 3,
+                  child: Image(image: CachedNetworkImageProvider(imageUrl), fit: BoxFit.fill),
+                ),
               ),
             ),
             Padding(

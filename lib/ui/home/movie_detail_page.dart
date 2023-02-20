@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
@@ -58,7 +59,10 @@ class _MovieDetailHeader extends StatelessWidget {
             tag: "hero-image-${movie.title}",
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
-              child: AspectRatio(aspectRatio: 2 / 3, child: Image(image: NetworkImage(movie.getPosterImageUrl()))),
+              child: AspectRatio(
+                aspectRatio: 2 / 3,
+                child: Image(image: CachedNetworkImageProvider(movie.getPosterImageUrl())),
+              ),
             ),
           ),
         ),
