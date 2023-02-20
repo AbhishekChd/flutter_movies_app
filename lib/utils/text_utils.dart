@@ -10,7 +10,7 @@ abstract class TextUtils {
 
   static String genreAndReleaseFormat(List<String> genres, String releaseDate, {int genreCount = 2}) {
     genreCount = min(genreCount, genres.length);
-    return "${genres.sublist(0, 2).join(", ")} | ${releaseDate.substring(0, 4)}";
+    return "${genres.sublist(0, min(2, genres.length)).join(", ")} | ${releaseDate.substring(0, 4)}";
   }
 
   static String movieRating(double rating, {int maxRating = 10, int targetRatingMax = 5}) {
