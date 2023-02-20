@@ -17,14 +17,10 @@ A bit overview, it uses [The Movie Database(TMDb)](https://www.themoviedb.org/) 
 ## Screenshots
 
 ### Dark Mode
-<img src="screenshot/home_dark.png" width="33%"/> 
-<img src="screenshot/movie_detail_dark.png" width="33%"/>
-<img src="screenshot/settings_dark.png" width="33%"/>
+<img src="screenshot/home_dark.png" width="33%"/> <img src="screenshot/movie_detail_dark.png" width="33%"/> <img src="screenshot/settings_dark.png" width="33%"/>
 
 ### Light Mode
-<img src="screenshot/home_light.png" width="33%"/> 
-<img src="screenshot/movie_detail_light.png" width="33%"/>
-<img src="screenshot/settings_light.png" width="33%"/>
+<img src="screenshot/home_light.png" width="33%"/> <img src="screenshot/movie_detail_light.png" width="33%"/> <img src="screenshot/settings_light.png" width="33%"/>
 
 
 ## Run the app
