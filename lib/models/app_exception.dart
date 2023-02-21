@@ -41,4 +41,11 @@ class AppException implements Exception {
   }
 }
 
-enum AppExceptionType { unauthorizedException, unknownException }
+enum AppExceptionType {
+  unauthorizedException("Unauthorized Exception"),
+  unknownException("Unknown Exception");
+
+  final String name;
+
+  const AppExceptionType(this.name);
+}

@@ -5,6 +5,7 @@ import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
 import 'package:flutter_movies_app/data/network/tmdb_api.dart';
 import 'package:flutter_movies_app/models/models.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'movie_detail_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late MovieBloc _bloc;
   bool filterPopularSelected = true;
+  bool isErrorState = false;
+  AppException? exception;
 
   @override
   void initState() {
@@ -32,6 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (isErrorState) {
+      return _errorScreen(exception!);
+    }
     return StreamBuilder<Resource<Map<int, String>>>(
       stream: _bloc.movieGenreStream,
       builder: (context, AsyncSnapshot<Resource<Map<int, String>>> genreSnapshot) {
@@ -49,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       case Status.loading:
                         return const Center(child: CircularProgressIndicator());
                       case Status.error:
-                        return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
+                        _sendErrorState(response.exception!);
                     }
                   }
                   return Container();
@@ -58,13 +64,22 @@ class _HomeScreenState extends State<HomeScreen> {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
             case Status.error:
-              return Text("Error: ${genreSnapshot.data!.exception}", style: Theme.of(context).textTheme.bodyLarge);
+              _sendErrorState(genreSnapshot.data!.exception!);
           }
         }
         if (genreSnapshot.hasData && genreSnapshot.data!.status == Status.completed) {}
         return Container();
       },
     );
+  }
+
+  void _sendErrorState(AppException ex) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        isErrorState = true;
+        exception = ex;
+      });
+    });
   }
 
   Widget _fetchMovieGrid(List<Movie> movies, Map<int, String> genres) {
@@ -135,5 +150,59 @@ class _HomeScreenState extends State<HomeScreen> {
       ));
     }
     return widgets;
+  }
+
+  Widget _errorScreen(AppException exception) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.dangerous_outlined, color: Colors.red, size: 32),
+                  const SizedBox(width: 8),
+                  Text("Error",
+                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                            fontFamily: GoogleFonts.robotoMono().fontFamily,
+                          )),
+                ],
+              ),
+            ),
+            Text(
+              exception.exceptionType.name,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontFamily: GoogleFonts.robotoMono().fontFamily),
+            ),
+            const SizedBox(height: 8),
+            Text(exception.statusMessage),
+            const SizedBox(height: 64),
+            FilledButton(
+              onPressed: () => WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  _bloc =
+                      MovieBloc(filterPopularSelected ? MovieSortingCriteria.popular : MovieSortingCriteria.topRated);
+                  isErrorState = false;
+                  _bloc.fetchMovieGenres();
+                });
+              }),
+              style: const ButtonStyle(
+                shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8)))),
+                padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 32)),
+              ),
+              child: const Text("Try again", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
