@@ -34,7 +34,7 @@ class MovieBloc {
     tmdbClient.getMoviesByCriteria(criteria, apiKey).then((TmdbResponse value) {
       movieListSink.add(Resource.completed(value.movies));
     }).onError((error, stackTrace) {
-      movieListSink.add(Resource.error(error.toString()));
+      movieListSink.add(Resource.error(AppException.getException(error!), error.toString()));
     });
   }
 
@@ -45,7 +45,7 @@ class MovieBloc {
     tmdbClient.getGenres(apiKey).then((GenreResponse value) {
       movieGenreSink.add(Resource.completed(Genre.toMap(value.genres)));
     }).onError((error, stackTrace) {
-      movieGenreSink.add(Resource.error(error.toString()));
+      movieGenreSink.add(Resource.error(AppException.getException(error!), error.toString()));
     });
   }
 

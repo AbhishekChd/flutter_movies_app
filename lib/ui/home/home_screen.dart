@@ -35,25 +35,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder<Resource<Map<int, String>>>(
       stream: _bloc.movieGenreStream,
       builder: (context, AsyncSnapshot<Resource<Map<int, String>>> genreSnapshot) {
-        if (genreSnapshot.hasData && genreSnapshot.data!.status == Status.completed) {
-          return StreamBuilder<Resource<List<Movie>>>(
-            stream: _bloc.movieListStream,
-            builder: (context, AsyncSnapshot<Resource<List<Movie>>> movieListSnapshot) {
-              if (movieListSnapshot.hasData) {
-                Resource<List<Movie>> response = movieListSnapshot.data!;
-                switch (response.status) {
-                  case Status.completed:
-                    return _fetchMovieGrid(response.data!, genreSnapshot.data!.data!);
-                  case Status.loading:
-                    return const Center(child: CircularProgressIndicator());
-                  case Status.error:
-                    return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
-                }
-              }
-              return Container();
-            },
-          );
+        if (genreSnapshot.hasData) {
+          switch (genreSnapshot.data!.status) {
+            case Status.completed:
+              return StreamBuilder<Resource<List<Movie>>>(
+                stream: _bloc.movieListStream,
+                builder: (context, AsyncSnapshot<Resource<List<Movie>>> movieListSnapshot) {
+                  if (movieListSnapshot.hasData) {
+                    Resource<List<Movie>> response = movieListSnapshot.data!;
+                    switch (response.status) {
+                      case Status.completed:
+                        return _fetchMovieGrid(response.data!, genreSnapshot.data!.data!);
+                      case Status.loading:
+                        return const Center(child: CircularProgressIndicator());
+                      case Status.error:
+                        return Text("Error: ${response.message}", style: Theme.of(context).textTheme.bodyLarge);
+                    }
+                  }
+                  return Container();
+                },
+              );
+            case Status.loading:
+              return const Center(child: CircularProgressIndicator());
+            case Status.error:
+              return Text("Error: ${genreSnapshot.data!.exception}", style: Theme.of(context).textTheme.bodyLarge);
+          }
         }
+        if (genreSnapshot.hasData && genreSnapshot.data!.status == Status.completed) {}
         return Container();
       },
     );
