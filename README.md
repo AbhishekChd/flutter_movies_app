@@ -8,7 +8,7 @@ A bit overview, it uses [The Movie Database(TMDb)](https://www.themoviedb.org/) 
 - [x] List movies as cards and show more details on selecting
 - [ ] Favourite you watched movies
 - [ ] Add movies to watchlist
-- [x] Settings to add API Key and switch Dark Mode
+- [x] Settings to add Auth token and switch Dark Mode
 - [x] Cached Images
 - [x] BLoC Pattern
 - [ ] Custom Error Handling
@@ -28,11 +28,11 @@ A bit overview, it uses [The Movie Database(TMDb)](https://www.themoviedb.org/) 
 2. Fetch dependencies using `flutter get`
 3. Run: `flutter pub run build_runner watch --delete-conflicting-outputs`
 4. Then hit the <kbd>Run</kbd> button
-5. When app loads you need to add the API Key in settings screen
+5. When app loads you need to add the Authentication token in settings screen
 
 
-## API Key
-To run the app you have to add [The Movie DB](https://developers.themoviedb.org/3/getting-started/introduction) API key. You can register on the developer website and fill some basic app information, then get the API Key.
+## Auth Token
+To run the app you have to add [The Movie DB](https://developers.themoviedb.org/3/getting-started/introduction) Authentication token. You can register on the developer website and fill some basic app information, then get the Auth token.
 
 
 ## Libraries used
