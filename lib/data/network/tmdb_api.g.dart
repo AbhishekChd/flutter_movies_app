@@ -23,12 +23,13 @@ class _TMDBClient implements TMDBClient {
   @override
   Future<TmdbResponse> getMoviesByCriteria(
     criteria,
-    apiKey,
+    token,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'api_key': apiKey};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<TmdbResponse>(Options(
       method: 'GET',
@@ -47,11 +48,12 @@ class _TMDBClient implements TMDBClient {
   }
 
   @override
-  Future<GenreResponse> getGenres(apiKey) async {
+  Future<GenreResponse> getGenres(token) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'api_key': apiKey};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GenreResponse>(Options(
       method: 'GET',

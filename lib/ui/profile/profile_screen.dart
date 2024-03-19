@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/config/config.dart';
 import 'package:flutter_movies_app/config/prefs.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
-import 'package:flutter_movies_app/ui/profile/api_key_page.dart';
+import 'package:flutter_movies_app/ui/profile/auth_token_page.dart';
 import 'package:flutter_movies_app/utils/text_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     SystemPreferences systemPreferences = Provider.of<SystemPreferences>(context);
-    String apiKey = TextUtils.minifyText(systemPreferences.getApiKey(), 6);
+    String authToken = TextUtils.minifyText(systemPreferences.getAuthToken(), 6);
     return SettingsList(
       sections: [
         SettingsSection(
@@ -29,10 +29,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           tiles: <SettingsTile>[
             SettingsTile.navigation(
               leading: const Icon(Icons.key),
-              title: const Text(Strings.settingItemApiKey),
-              value: apiKey.isEmpty ? const Text(Strings.settingItemApiKeyDefault) : Text(apiKey),
+              title: const Text(Strings.settingItemAuthToken),
+              value: authToken.isEmpty ? const Text(Strings.settingItemAuthTokenDefault) : Text(authToken),
               onPressed: (context) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ApiKeyEdit()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthTokenEdit()));
               },
             ),
           ],

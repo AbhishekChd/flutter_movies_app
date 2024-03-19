@@ -13,10 +13,10 @@ class SystemPreferences extends ChangeNotifier {
   static bool _isDark = true;
   static bool _isSystemDefault = true;
 
-  String getApiKey() => box.get(Strings.prefApiKey, defaultValue: '');
+  String getAuthToken() => box.get(Strings.prefAuthToken, defaultValue: '');
 
-  saveApiKey(String key) {
-    box.put(Strings.prefApiKey, key);
+  saveAuthToken(String key) {
+    box.put(Strings.prefAuthToken, key);
     notifyListeners();
   }
 

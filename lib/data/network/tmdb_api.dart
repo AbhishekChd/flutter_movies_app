@@ -16,11 +16,11 @@ abstract class TMDBClient {
   @GET(TMDB.movieByCriteria)
   Future<TmdbResponse> getMoviesByCriteria(
     @Path("criteria") MovieSortingCriteria criteria,
-    @Query("api_key") String apiKey,
+    @Header('Authorization') String token
   );
 
   @GET(TMDB.movieGenres)
-  Future<GenreResponse> getGenres(@Query("api_key") String apiKey);
+  Future<GenreResponse> getGenres(@Header('Authorization') String token);
 }
 
 enum MovieSortingCriteria {

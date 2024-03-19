@@ -29,9 +29,9 @@ class MovieBloc {
 
   fetchMovieList(MovieSortingCriteria criteria) {
     movieListSink.add(Resource.loading("Fetching popular movies"));
-    String apiKey = preferences.getApiKey();
+    String authToken = preferences.getAuthToken();
 
-    tmdbClient.getMoviesByCriteria(criteria, apiKey).then((TmdbResponse value) {
+    tmdbClient.getMoviesByCriteria(criteria, 'Bearer $authToken').then((TmdbResponse value) {
       movieListSink.add(Resource.completed(value.movies));
     }).onError((error, stackTrace) {
       movieListSink.add(Resource.error(AppException.getException(error!), error.toString()));
@@ -40,9 +40,9 @@ class MovieBloc {
 
   fetchMovieGenres() {
     movieGenreSink.add(Resource.loading("Fetching movie genres"));
-    String apiKey = preferences.getApiKey();
+    String token = preferences.getAuthToken();
 
-    tmdbClient.getGenres(apiKey).then((GenreResponse value) {
+    tmdbClient.getGenres('Bearer $token').then((GenreResponse value) {
       movieGenreSink.add(Resource.completed(Genre.toMap(value.genres)));
     }).onError((error, stackTrace) {
       movieGenreSink.add(Resource.error(AppException.getException(error!), error.toString()));

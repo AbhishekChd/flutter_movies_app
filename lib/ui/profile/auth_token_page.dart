@@ -3,13 +3,13 @@ import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/config/config.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
 
-class ApiKeyEdit extends StatelessWidget {
-  const ApiKeyEdit({Key? key}) : super(key: key);
+class AuthTokenEdit extends StatelessWidget {
+  const AuthTokenEdit({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
-    controller.text = preferences.getApiKey();
+    controller.text = preferences.getAuthToken();
 
     return Scaffold(
       appBar: AppBar(
@@ -18,9 +18,9 @@ class ApiKeyEdit extends StatelessWidget {
           TextButton(
               onPressed: () {
                 if (controller.text.isNotEmpty) {
-                  preferences.saveApiKey(controller.text);
+                  preferences.saveAuthToken(controller.text);
                 } else {
-                  preferences.saveApiKey('');
+                  preferences.saveAuthToken('');
                 }
                 Navigator.pop(context);
               },
@@ -30,7 +30,7 @@ class ApiKeyEdit extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: PrimaryTextField(
-          label: "API Key",
+          label: "Auth Token",
           prefixIcon: Icons.key,
           inputType: TextInputType.multiline,
           controller: controller,

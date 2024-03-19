@@ -5,7 +5,7 @@ abstract class Strings {
   static const String appPreferencesName = 'pref_cineverse';
   static const String prefSystemThemeKey = 'is_system_default';
   static const String prefDarkModeKey = 'is_dark';
-  static const String prefApiKey = 'pref_api_key';
+  static const String prefAuthToken = 'pref_auth_token';
 
   /// Movie fetching filters
   static const String movieFilterPopular = 'Popular';
@@ -18,8 +18,8 @@ abstract class Strings {
 
   static const String settingTitleGeneral = "General";
   static const String settingTitleDarkMode = "Dark Mode";
-  static const String settingItemApiKey = "API Key";
-  static const String settingItemApiKeyDefault = "Tap to edit";
+  static const String settingItemAuthToken = "Auth token";
+  static const String settingItemAuthTokenDefault = "Tap to edit";
   static const String settingItemThemeSystem = "Automatic (System default)";
   static const String settingActionDone = "Done";
 }
