@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
+import 'package:flutter_movies_app/models/movie.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
@@ -11,6 +12,8 @@ class MovieCard extends StatelessWidget {
     this.genres = const [],
     this.imageUrl = "https://m.media-amazon.com/images/I/81CLFQwU-WL._SY741_.jpg", // todo: Remove default image
     this.onTap,
+    required this.movieId,
+    required this.movie,
   }) : super(key: key);
 
   final String name;
@@ -20,6 +23,8 @@ class MovieCard extends StatelessWidget {
   final cardRadiusTop = const Radius.circular(12);
   final cardRadiusBottom = const Radius.circular(6);
   final VoidCallback? onTap;
+  final int movieId;
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -30,65 +35,80 @@ class MovieCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.all(cardRadiusTop),
       ),
-      child: InkWell(
-        onTap: onTap,
-        customBorder: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Hero(
-              tag: "hero-image-$name",
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: cardRadiusTop,
-                  topRight: cardRadiusTop,
-                  bottomLeft: cardRadiusBottom,
-                  bottomRight: cardRadiusBottom,
-                ),
-                child: AspectRatio(
-                  aspectRatio: 2 / 3,
-                  child: Image(image: CachedNetworkImageProvider(imageUrl), fit: BoxFit.fill),
-                ),
-              ),
+      child: Stack(
+        children: [
+          // Main card content
+          InkWell(
+            onTap: onTap,
+            customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: _getTitleHeight(context),
-                    child: Text(
-                      name,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Hero(
+                  tag: "hero-image-$name",
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: cardRadiusTop,
+                      topRight: cardRadiusTop,
+                      bottomLeft: cardRadiusBottom,
+                      bottomRight: cardRadiusBottom,
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 2 / 3,
+                      child: Image(image: CachedNetworkImageProvider(imageUrl), fit: BoxFit.fill),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Row(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      StaticRatingBar(
-                        itemSize: Theme.of(context).textTheme.labelLarge!.fontSize!,
-                        rating: rating,
+                      SizedBox(
+                        height: _getTitleHeight(context),
+                        child: Text(
+                          name,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
                       ),
-                      const SizedBox(
-                        width: 8,
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          StaticRatingBar(
+                            itemSize: Theme.of(context).textTheme.labelLarge!.fontSize!,
+                            rating: rating,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(rating.toStringAsFixed(1), style: Theme.of(context).textTheme.labelLarge)
+                        ],
                       ),
-                      Text(rating.toStringAsFixed(1), style: Theme.of(context).textTheme.labelLarge)
+                      const SizedBox(height: 8),
+                      Text(_extractTopGenres(), style: Theme.of(context).textTheme.labelMedium),
+                      const SizedBox(height: 4),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(_extractTopGenres(), style: Theme.of(context).textTheme.labelMedium),
-                  const SizedBox(height: 4),
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          ),
+
+          // Favorite button
+          Positioned(
+            top: 8,
+            right: 8,
+            child: FavoriteButton(
+              movie: movie,
+              style: FavoriteButtonStyle.card,
+            ),
+          ),
+        ],
       ),
     );
   }

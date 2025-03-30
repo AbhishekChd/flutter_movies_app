@@ -22,9 +22,9 @@ class AppException implements Exception {
   }
 
   static AppException getException(Object error) {
-    DioError e = error as DioError;
+    DioException e = error as DioException;
     switch (e.type) {
-      case DioErrorType.unknown:
+      case DioExceptionType.unknown:
         return AppException(
           statusCode: -1,
           statusMessage: e.error.toString(),

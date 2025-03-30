@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movies_app/bloc/favorites/favorites_provider.dart';
 import 'package:flutter_movies_app/config/config.dart';
 import 'package:flutter_movies_app/config/prefs.dart';
 import 'package:flutter_movies_app/config/theme.dart';
 import 'package:flutter_movies_app/constants/strings.dart';
+import 'package:flutter_movies_app/data/repository/hive_favorites_storage.dart';
 import 'package:flutter_movies_app/ui/screens.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,13 @@ import 'package:provider/provider.dart';
 void main() async {
   await Hive.initFlutter();
   box = await Hive.openBox(Strings.appPreferencesName);
+
+  // Initialize favorites box
+  if (!Hive.isBoxOpen(Strings.prefFavoritesBox)) {
+    await Hive.openBox<Map>(Strings.prefFavoritesBox);
+  }
+
+  // Run the app
   runApp(const Application());
 }
 
@@ -25,7 +34,10 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SystemPreferences>(
       create: (context) => preferences,
-      child: const MovieAppProvider(),
+      child: FavoritesBlocProvider.create(
+        storage: HiveFavoritesStorage(),
+        child: const MovieAppProvider(),
+      ),
     );
   }
 }

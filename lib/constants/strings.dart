@@ -6,6 +6,7 @@ abstract class Strings {
   static const String prefSystemThemeKey = 'is_system_default';
   static const String prefDarkModeKey = 'is_dark';
   static const String prefAuthToken = 'pref_auth_token';
+  static const String prefFavoritesBox = 'pref_favorites';
 
   /// Movie fetching filters
   static const String movieFilterPopular = 'Popular';

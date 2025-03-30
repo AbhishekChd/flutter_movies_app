@@ -1,22 +1,43 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_movies_app/bloc/favorites/favorites_provider.dart';
 import 'package:flutter_movies_app/common_widgets/common_widgets.dart';
 import 'package:flutter_movies_app/models/models.dart';
 import 'package:flutter_movies_app/utils/text_utils.dart';
 
-class MovieDetail extends StatelessWidget {
+class MovieDetail extends StatefulWidget {
   const MovieDetail({Key? key, required this.movie, required this.genres}) : super(key: key);
 
   final List<String> genres;
   final Movie movie;
 
   @override
+  State<MovieDetail> createState() => _MovieDetailState();
+}
+
+class _MovieDetailState extends State<MovieDetail> {
+  @override
+  void initState() {
+    super.initState();
+    // Load favorite status when the detail page loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final favoritesBloc = FavoritesBlocProvider.of(context);
+      favoritesBloc.isFavorite(widget.movie.id);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Movie Details"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_outline))],
+        actions: [
+          FavoriteButton(
+            movie: widget.movie,
+            style: FavoriteButtonStyle.appBar,
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
@@ -29,11 +50,11 @@ class MovieDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _MovieDetailHeader(genres: genres, movie: movie),
+              _MovieDetailHeader(genres: widget.genres, movie: widget.movie),
               const SizedBox(height: 32),
               Text("Overview", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
-              Text(movie.overview, style: Theme.of(context).textTheme.bodyLarge),
+              Text(widget.movie.overview, style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
         ),

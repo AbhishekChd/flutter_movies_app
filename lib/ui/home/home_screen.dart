@@ -139,6 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
         rating: movie.rating / 2,
         imageUrl: movie.getPosterImageUrl(),
         genres: Genre.toNameList(genres, movie.genreIds),
+        movieId: movie.id,
+        movie: movie,
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => MovieDetail(
@@ -194,9 +196,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               }),
               style: const ButtonStyle(
-                shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8)))),
-                padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 32)),
+                shape:
+                    WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8)))),
+                padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 32)),
               ),
               child: const Text("Try again", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
             ),
